@@ -110,6 +110,21 @@ docs/AI_INSTALL.md
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
+Paper Easy 的 Docker 镜像会由 GitHub Actions 发布到：
+
+```text
+ghcr.io/yanxingliu/paper-easy
+```
+
+示例：
+
+```bash
+docker run --rm -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)" \
+  -v "$PWD/paper-easy-data:/app/data" \
+  ghcr.io/yanxingliu/paper-easy:latest
+```
+
 ### 方案 B：使用 hosted 只读 Paper Easy
 
 如果你不想本地部署爬取 arXiv 论文的 Paper Easy，可以试用我部署好的实例：

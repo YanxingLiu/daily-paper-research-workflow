@@ -110,6 +110,21 @@ Default endpoints:
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
+The Paper Easy Docker image is published by GitHub Actions to:
+
+```text
+ghcr.io/yanxingliu/paper-easy
+```
+
+Example:
+
+```bash
+docker run --rm -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)" \
+  -v "$PWD/paper-easy-data:/app/data" \
+  ghcr.io/yanxingliu/paper-easy:latest
+```
+
 ### Option B: Use the Hosted Read-Only Paper Easy
 
 If you do not want to run the arXiv crawler locally, you can try my hosted Paper Easy instance:

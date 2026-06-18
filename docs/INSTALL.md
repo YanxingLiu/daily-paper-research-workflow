@@ -41,6 +41,15 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
+也可以直接使用 GitHub Container Registry 镜像：
+
+```bash
+docker run --rm -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)" \
+  -v "$PWD/paper-easy-data:/app/data" \
+  ghcr.io/yanxingliu/paper-easy:latest
+```
+
 如果不想本地部署 Paper Easy，可以使用 hosted 只读实例：
 
 ```text
