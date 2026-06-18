@@ -1,0 +1,35 @@
+{
+  "name": "paper-easy",
+  "version": "0.1.0+codex.20260609074553",
+  "description": "Query Papers Easy arXiv and Hugging Face paper feeds through MCP.",
+  "author": {
+    "name": "Daily Paper Workflow"
+  },
+  "homepage": "http://127.0.0.1:5174/",
+  "keywords": [
+    "papers",
+    "arxiv",
+    "huggingface",
+    "mcp",
+    "research"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Paper Easy",
+    "shortDescription": "Query Paper Easy research feeds.",
+    "longDescription": "Paper Easy connects Codex to a self-hosted paper reader with cached arXiv daily papers, watched-author papers, and Hugging Face Daily Papers through an authenticated MCP endpoint.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "MCP",
+      "Research"
+    ],
+    "websiteURL": "http://127.0.0.1:5174/",
+    "defaultPrompt": [
+      "Use Paper Easy to show today's Hugging Face Daily Papers.",
+      "Use Paper Easy to list cached arXiv papers for watched authors.",
+      "Use Paper Easy to query recent cs.AI daily papers."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

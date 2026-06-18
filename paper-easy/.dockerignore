@@ -1,0 +1,13 @@
+node_modules
+.npm-cache
+dist
+test-results
+playwright-report
+screenshots
+*.tsbuildinfo
+.env
+data
+.git
+.gitignore
+Dockerfile
+docker-compose.yml

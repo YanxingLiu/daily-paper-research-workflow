@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "paper_easy": {
+      "url": "http://127.0.0.1:5174/mcp",
+      "bearer_token_env_var": "PAPERS_EASY_ADMIN_TOKEN",
+      "tool_timeout_sec": 60,
+      "enabled": true,
+      "enabled_tools": [
+        "get_arxiv_daily_papers",
+        "get_arxiv_author_papers",
+        "get_huggingface_daily_papers",
+        "sync_papers"
+      ]
+    }
+  }
+}

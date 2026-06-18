@@ -1,0 +1,68 @@
+{
+  "date": "2026-06-11",
+  "topics": ["世界模型", "具身智能", "空间记忆", "多模态大语言模型"],
+  "sources": [
+    {
+      "source": "arxiv",
+      "papers": [
+        {
+          "id": "2606.12406",
+          "versionedId": "2606.12406v1",
+          "title": "FACTR 2: Learning External Force Sensing for Commodity Robot Arms Improves Policy Learning",
+          "summary": "Contact-rich manipulation requires force sensitivity, but many robot arms lack dedicated force sensors due to their high cost. We present Neural External Torque Estimation (NEXT), a data-driven method that estimates external joint torques without needing any dedicated force sensors.",
+          "authors": ["Steven Oh", "Jason Jingzhou Liu", "Deepak Pathak"],
+          "primaryCategory": "cs.RO",
+          "categories": ["cs.AI", "cs.LG", "cs.RO"],
+          "arxivUrl": "https://arxiv.org/abs/2606.12406",
+          "pdfUrl": "https://arxiv.org/pdf/2606.12406",
+          "translations": {
+            "zh": {
+              "language": "zh",
+              "title": "FACTR 2：为商用机器人手臂学习外力传感提升策略学习",
+              "summary": "接触丰富的操作需要力敏感性，但许多机器人手臂因高昂成本而缺少专用力传感器。我们提出神经外力矩估计（NEXT），一种无需专用力传感器的数据驱动方法，用于估计外部关节力矩。"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "huggingface",
+      "papers": [
+        {
+          "id": "2606.12403",
+          "versionedId": "2606.12403",
+          "title": "World Pilot: Steering Vision-Language-Action Models with World-Action Priors",
+          "summary": "Vision-Language-Action (VLA) models inherit semantic grounding from large-scale pretraining and perform competently across in-distribution manipulation tasks. This grounding, however, is built on static image-text pairs, whereas manipulation is a continuous, contact-rich process whose dynamics this pretraining cannot capture. We present World Pilot, a VLA framework that augments the policy with priors from a World-Action Model (WAM), routed into the decision chain through two complementary pathways.",
+          "authors": ["Zefu Lin", "Rongxu Cui", "Junjia Xu"],
+          "primaryCategory": "HF Daily",
+          "categories": ["HF Daily"],
+          "arxivUrl": "https://arxiv.org/abs/2606.12403",
+          "pdfUrl": "https://arxiv.org/pdf/2606.12403",
+          "huggingFaceUrl": "https://huggingface.co/papers/2606.12403",
+          "translations": {
+            "zh": {
+              "language": "zh",
+              "title": "World Pilot: 利用世界-动作先验引导视觉-语言-动作模型",
+              "summary": "视觉-语言-动作（VLA）模型从大规模预训练中继承语义基础，并在分布内的操作任务中表现良好。然而，这种语义基础建立在静态图像-文本对上，而操作是一个连续的、接触丰富的过程，其动态特性是这类预训练无法捕捉的。我们提出 World Pilot，一个 VLA 框架，通过来自世界-动作模型（WAM）的先验增强策略，并通过两条互补路径注入决策链。"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "selected": {
+    "世界模型": [
+      {
+        "index": 2,
+        "also_topics": ["具身智能"],
+        "relevance": "该论文直接使用世界-动作模型先验来增强 VLA 策略，属于世界模型与具身智能交叉方向。"
+      }
+    ],
+    "具身智能": [
+      {
+        "index": 1,
+        "relevance": "该论文面向机器人手臂的接触丰富操作和策略学习，明确属于具身智能方向。"
+      }
+    ]
+  }
+}

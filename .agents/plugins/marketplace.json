@@ -1,0 +1,33 @@
+{
+  "name": "daily-paper-workflow",
+  "interface": {
+    "displayName": "Daily Paper Workflow"
+  },
+  "plugins": [
+    {
+      "name": "paper-easy",
+      "source": {
+        "source": "local",
+        "path": "./plugins/paper-easy-codex-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "codex-obsidian",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codex-obsidian"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+

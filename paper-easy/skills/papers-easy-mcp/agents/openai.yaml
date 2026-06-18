@@ -1,0 +1,6 @@
+interface:
+  display_name: "Papers Easy MCP"
+  short_description: "Query and refresh Papers Easy MCP feeds"
+  default_prompt: "Use $papers-easy-mcp to query cached Papers Easy feeds through MCP."
+policy:
+  allow_implicit_invocation: true
