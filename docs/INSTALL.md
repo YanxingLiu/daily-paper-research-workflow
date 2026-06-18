@@ -1,5 +1,9 @@
 # 安装指引
 
+## 给 Codex 安装
+
+如果希望让 Codex 自动安装本工作流，请让 Codex 先阅读 [AI_INSTALL.md](AI_INSTALL.md)。那份文档是面向 AI agent 的安装指令，包含本地 Paper Easy 与 hosted Paper Easy 两种路径。
+
 ## 1. 准备 Paper Easy
 
 ```bash
@@ -25,10 +29,24 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
+如果不想本地部署 Paper Easy，可以使用 hosted 只读实例：
+
+```text
+https://paper-easy.liuyanxing.site:8443/
+```
+
+该服务无需 admin token 即可使用只读功能，但因为作者临近毕业搬家，主机可能会搬走，不保证长期可用。切换到 hosted 只读 MCP：
+
+```bash
+cp plugins/paper-easy-codex-plugin/.mcp.hosted.example.json \
+  plugins/paper-easy-codex-plugin/.mcp.json
+./scripts/install_codex_plugins.sh
+```
+
 ## 2. 安装 Codex 插件
 
 ```bash
-source paper-easy/.env
+eval "$(./scripts/print_paper_easy_token.sh)"
 ./scripts/install_codex_plugins.sh
 ```
 
@@ -54,7 +72,8 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Zotero Desktop
 - Zotero Connector
 - Better BibTeX for Zotero
-- LM for Zotero
+- [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)
+- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)
 
 Zotero 本地 API 默认使用：
 

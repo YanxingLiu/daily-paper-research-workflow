@@ -10,6 +10,8 @@
 - `automation/`：每日论文流水线脚本、LM for Zotero prompts 和示例输入。
 - `scripts/`：本地安装、启动和 URL handler 安装脚本。
 
+如果你希望让 Codex 直接帮你安装这个工作流，可以把仓库交给 Codex，然后让它阅读 [docs/AI_INSTALL.md](docs/AI_INSTALL.md)。这份 Markdown 是专门给 AI agent 看的安装指令；Codex 读完后可以按里面的步骤完成本机安装和验证。
+
 ## 快速开始
 
 macOS 上推荐按下面顺序执行：
@@ -27,6 +29,26 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 
 `run_paper_easy.sh` 会占用前台终端并启动 `http://127.0.0.1:5174`。`eval "$(./scripts/print_paper_easy_token.sh)"` 只把 Paper Easy MCP token 导出到当前 shell，不会打印 token 明文。另开一个 Codex 会话后，就可以让 Codex 使用 Paper Easy 插件读取每日论文，并按 `docs/CODEX_DAILY_AUTOMATION_PROMPT.md` 里的流程生成简报。
 
+## Paper Easy 后端选择
+
+推荐本地部署 Paper Easy，这样可以稳定抓取、刷新缓存，并按自己的方向配置 arXiv/Hugging Face 数据源。
+
+如果你不想本地部署爬取 arXiv 论文的 Paper Easy，也可以使用我部署好的只读实例：
+
+```text
+https://paper-easy.liuyanxing.site:8443/
+```
+
+因为我临近毕业搬家，主机可能会搬走，所以这个 hosted 服务不保证长期可用。它无需 admin token 即可使用所有只读功能。切换方法：
+
+```bash
+cp plugins/paper-easy-codex-plugin/.mcp.hosted.example.json \
+  plugins/paper-easy-codex-plugin/.mcp.json
+./scripts/install_codex_plugins.sh
+```
+
+hosted 只读模式适合快速试用 `get_arxiv_daily_papers`、`get_arxiv_author_papers`、`get_huggingface_daily_papers`。如果需要刷新缓存或长期稳定使用，建议本地部署。
+
 ## 外部依赖
 
 - Node.js 20+ 和 npm
@@ -35,7 +57,8 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Zotero Desktop，并启用本地 API
 - Zotero Connector，用于导入论文和 PDF
 - Better BibTeX for Zotero，用于 collection scanAUX
-- [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)，用于把 Codex 生成的 note 写入 Zotero
+- [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)，用于把 Codex 生成的 note 写入 Zotero，也负责按需生成论文阅读 note。
+- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)，用于让 Codex 操作本地 Zotero library。
 - Obsidian，可选安装官方 Obsidian CLI
 
 ## 工作流概览

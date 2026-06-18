@@ -11,7 +11,7 @@ The public repository should not contain:
 - Paper PDFs or local Zotero attachments
 - generated `automation/work/` outputs
 - generated note Markdown artifacts
-- private deployment URLs
+- private deployment URLs, except the optional public hosted Paper Easy endpoint documented for read-only trial use
 
 ## Token handling
 
