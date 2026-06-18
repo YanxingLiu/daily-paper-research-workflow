@@ -27,6 +27,8 @@
   <img alt="Codex" src="https://img.shields.io/badge/built%20for-Codex-5E4AE3">
 </p>
 
+![Daily Paper Research Workflow showcase](assets/showcase.png)
+
 ## Why This Exists
 
 Daily paper feeds are useful, but they are noisy. This project packages a workflow that:
@@ -148,8 +150,6 @@ Use local mode if you need reliable cache refresh or custom feed configuration.
 - Obsidian, optionally with the official Obsidian CLI
 
 ## Generated Brief
-
-![Daily Paper Research Workflow showcase](assets/showcase.png)
 
 The final Markdown brief has two main sections:
 

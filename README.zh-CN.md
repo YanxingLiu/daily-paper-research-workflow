@@ -27,6 +27,8 @@
   <img alt="Codex" src="https://img.shields.io/badge/built%20for-Codex-5E4AE3">
 </p>
 
+![Daily Paper Research Workflow 最终效果](assets/showcase.png)
+
 ## 为什么做这个项目
 
 每日论文 feed 很有用，但噪声也很大。这个仓库打包了一套我自己在用的工作流：
@@ -148,8 +150,6 @@ hosted 模式适合快速试用：
 - Obsidian，可选安装官方 Obsidian CLI
 
 ## 生成的简报
-
-![Daily Paper Research Workflow 最终效果](assets/showcase.png)
 
 最终 Markdown 简报包含两个主小节：
 
