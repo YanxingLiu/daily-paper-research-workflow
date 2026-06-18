@@ -4,6 +4,18 @@
 
 如果希望让 Codex 自动安装本工作流，请让 Codex 先阅读 [AI_INSTALL.md](AI_INSTALL.md)。那份文档是面向 AI agent 的安装指令，包含本地 Paper Easy 与 hosted Paper Easy 两种路径。
 
+如果是新 clone，建议带上 submodule：
+
+```bash
+git clone --recurse-submodules https://github.com/YanxingLiu/daily-paper-research-workflow.git
+```
+
+已有 clone 可运行：
+
+```bash
+git submodule update --init --recursive
+```
+
 ## 1. 准备 Paper Easy
 
 ```bash
@@ -54,6 +66,7 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 
 - `paper-easy`
 - `codex-obsidian`
+- `zotero@openai-curated`，来自 `plugins/openai-plugins/plugins/zotero`
 
 Paper Easy 插件从环境变量 `PAPERS_EASY_ADMIN_TOKEN` 读取认证 token。不要把 token 写入插件文件。
 
@@ -73,7 +86,7 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Zotero Connector
 - Better BibTeX for Zotero
 - [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)
-- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)
+- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)，本仓库 submodule 路径是 `plugins/openai-plugins/plugins/zotero`
 
 Zotero 本地 API 默认使用：
 

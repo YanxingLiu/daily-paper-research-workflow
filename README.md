@@ -7,6 +7,7 @@
 - `paper-easy/`：Paper Easy 服务源码，提供网页、缓存、arXiv/Hugging Face 抓取和 MCP endpoint。
 - `plugins/paper-easy-codex-plugin/`：Codex 访问 Paper Easy MCP 的插件。
 - `plugins/codex-obsidian/`：Obsidian Codex 插件副本，上游为 <https://github.com/greg-asher/codex-obsidian>。
+- `plugins/openai-plugins/`：OpenAI plugins monorepo submodule；Zotero Codex plugin 位于 `plugins/openai-plugins/plugins/zotero`。
 - `automation/`：每日论文流水线脚本、LM for Zotero prompts 和示例输入。
 - `scripts/`：本地安装、启动和 URL handler 安装脚本。
 
@@ -17,7 +18,7 @@
 macOS 上推荐按下面顺序执行：
 
 ```bash
-git clone https://github.com/YanxingLiu/daily-paper-research-workflow.git
+git clone --recurse-submodules https://github.com/YanxingLiu/daily-paper-research-workflow.git
 cd daily-paper-research-workflow
 
 ./scripts/bootstrap.sh
@@ -58,7 +59,7 @@ hosted 只读模式适合快速试用 `get_arxiv_daily_papers`、`get_arxiv_auth
 - Zotero Connector，用于导入论文和 PDF
 - Better BibTeX for Zotero，用于 collection scanAUX
 - [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)，用于把 Codex 生成的 note 写入 Zotero，也负责按需生成论文阅读 note。
-- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)，用于让 Codex 操作本地 Zotero library。
+- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)，用于让 Codex 操作本地 Zotero library；本仓库也以 submodule 形式放在 `plugins/openai-plugins/plugins/zotero`。
 - Obsidian，可选安装官方 Obsidian CLI
 
 ## 工作流概览
