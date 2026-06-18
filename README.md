@@ -149,6 +149,8 @@ Use local mode if you need reliable cache refresh or custom feed configuration.
 
 ## Generated Brief
 
+![Daily Paper Research Workflow showcase](assets/showcase.png)
+
 The final Markdown brief has two main sections:
 
 1. Interested Papers

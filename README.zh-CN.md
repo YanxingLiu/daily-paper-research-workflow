@@ -149,6 +149,8 @@ hosted 模式适合快速试用：
 
 ## 生成的简报
 
+![Daily Paper Research Workflow 最终效果](assets/showcase.png)
+
 最终 Markdown 简报包含两个主小节：
 
 1. 感兴趣论文
