@@ -56,7 +56,7 @@ git submodule update --init --recursive
 
 ## 选择 Paper Easy 后端
 
-### 方案 A：本地部署，推荐
+### 方案 A：从源码本地部署，推荐
 
 本地部署可以完整使用只读、刷新缓存和本地自定义配置。
 
@@ -78,7 +78,37 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
-### 方案 B：使用作者部署的 hosted Paper Easy，只读快捷模式
+### 方案 B：用 Docker 本地部署
+
+如果用户想本地部署，但不想安装 Paper Easy 的 Node 依赖，可以使用 GitHub Container Registry 镜像：
+
+```bash
+export PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)"
+mkdir -p paper-easy-data
+
+docker run -d --name paper-easy --restart unless-stopped \
+  -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN \
+  -e PAPERS_EASY_DB_PATH=/app/data/papers.easy.sqlite \
+  -v "$PWD/paper-easy-data:/app/data" \
+  ghcr.io/yanxingliu/paper-easy:latest
+```
+
+它会启动：
+
+- Web: `http://127.0.0.1:5174`
+- MCP: `http://127.0.0.1:5174/mcp`
+
+安装 Codex 插件和启动 Codex 时必须使用同一个 `PAPERS_EASY_ADMIN_TOKEN`：
+
+```bash
+./scripts/install_codex_plugins.sh
+./scripts/install_note_url_handler.sh
+```
+
+不要把该 token 写入仓库。如果用户要长期使用，建议保存到密码管理器或本机 shell profile。需要查看日志时运行 `docker logs -f paper-easy`。
+
+### 方案 C：使用作者部署的 hosted Paper Easy，只读快捷模式
 
 如果用户不想本地部署爬取 arXiv 论文的 Paper Easy，可以使用作者部署好的实例：
 

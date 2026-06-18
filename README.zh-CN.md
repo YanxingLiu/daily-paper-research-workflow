@@ -101,7 +101,7 @@ docs/AI_INSTALL.md
 
 ## Paper Easy 后端选择
 
-### 方案 A：本地部署 Paper Easy
+### 方案 A：从源码本地部署 Paper Easy
 
 长期使用推荐本地部署。这样可以稳定刷新缓存，按自己的方向配置 arXiv/Hugging Face 数据源，也不依赖我的机器。
 
@@ -110,22 +110,52 @@ docs/AI_INSTALL.md
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
+快速开始里的默认方式就是源码本地部署：
+
+```bash
+./scripts/bootstrap.sh
+eval "$(./scripts/print_paper_easy_token.sh)"
+./scripts/run_paper_easy.sh
+```
+
+### 方案 B：用 Docker 本地部署 Paper Easy
+
+如果你只想运行 Paper Easy 后端，不想在本机安装 Paper Easy 的 Node 依赖，可以直接使用已发布的 Docker 镜像。
+
 Paper Easy 的 Docker 镜像会由 GitHub Actions 发布到：
 
 ```text
 ghcr.io/yanxingliu/paper-easy
 ```
 
-示例：
+启动本地容器：
 
 ```bash
-docker run --rm -p 5174:5174 \
-  -e PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)" \
+export PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)"
+mkdir -p paper-easy-data
+
+docker run -d --name paper-easy --restart unless-stopped \
+  -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN \
+  -e PAPERS_EASY_DB_PATH=/app/data/papers.easy.sqlite \
   -v "$PWD/paper-easy-data:/app/data" \
   ghcr.io/yanxingliu/paper-easy:latest
 ```
 
-### 方案 B：使用 hosted 只读 Paper Easy
+安装插件和启动 Codex 时，需要在 shell 中保留同一个 `PAPERS_EASY_ADMIN_TOKEN`：
+
+```bash
+./scripts/install_codex_plugins.sh
+```
+
+Docker 本地部署的端点和源码部署一致：
+
+- Web: `http://127.0.0.1:5174`
+- MCP: `http://127.0.0.1:5174/mcp`
+
+如果需要查看启动或缓存刷新日志，可以运行 `docker logs -f paper-easy`。
+
+### 方案 C：使用 hosted 只读 Paper Easy
 
 如果你不想本地部署爬取 arXiv 论文的 Paper Easy，可以试用我部署好的实例：
 

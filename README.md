@@ -101,7 +101,7 @@ That file is written as an installation playbook for an AI coding agent.
 
 ## Paper Easy Backend Options
 
-### Option A: Run Paper Easy Locally
+### Option A: Run Paper Easy Locally from Source
 
 This is recommended for long-term use. Local deployment gives you stable cache refresh, local configuration, and full control over the arXiv/Hugging Face feed settings.
 
@@ -110,22 +110,52 @@ Default endpoints:
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
+Source-based local setup is what the quick start uses:
+
+```bash
+./scripts/bootstrap.sh
+eval "$(./scripts/print_paper_easy_token.sh)"
+./scripts/run_paper_easy.sh
+```
+
+### Option B: Run Paper Easy Locally with Docker
+
+If you only want the backend and do not want to install Paper Easy's Node dependencies locally, use the published Docker image instead.
+
 The Paper Easy Docker image is published by GitHub Actions to:
 
 ```text
 ghcr.io/yanxingliu/paper-easy
 ```
 
-Example:
+Start a local container:
 
 ```bash
-docker run --rm -p 5174:5174 \
-  -e PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)" \
+export PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)"
+mkdir -p paper-easy-data
+
+docker run -d --name paper-easy --restart unless-stopped \
+  -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN \
+  -e PAPERS_EASY_DB_PATH=/app/data/papers.easy.sqlite \
   -v "$PWD/paper-easy-data:/app/data" \
   ghcr.io/yanxingliu/paper-easy:latest
 ```
 
-### Option B: Use the Hosted Read-Only Paper Easy
+Keep the same `PAPERS_EASY_ADMIN_TOKEN` in the shell where you install plugins and launch Codex:
+
+```bash
+./scripts/install_codex_plugins.sh
+```
+
+The local endpoints are the same as the source deployment:
+
+- Web: `http://127.0.0.1:5174`
+- MCP: `http://127.0.0.1:5174/mcp`
+
+Use `docker logs -f paper-easy` if you want to inspect startup or cache refresh logs.
+
+### Option C: Use the Hosted Read-Only Paper Easy
 
 If you do not want to run the arXiv crawler locally, you can try my hosted Paper Easy instance:
 

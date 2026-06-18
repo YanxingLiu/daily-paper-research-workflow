@@ -18,6 +18,14 @@ git submodule update --init --recursive
 
 ## 1. 准备 Paper Easy
 
+Paper Easy 有三种后端选择：
+
+- 方案 A：从源码本地部署，适合开发和长期自定义。
+- 方案 B：用 Docker 本地部署，适合只想稳定运行后端、不想安装 Node 依赖。
+- 方案 C：使用 hosted 只读实例，适合快速试用。
+
+### 方案 A：从源码本地部署
+
 ```bash
 ./scripts/bootstrap.sh
 ```
@@ -41,14 +49,42 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Web: `http://127.0.0.1:5174`
 - MCP: `http://127.0.0.1:5174/mcp`
 
-也可以直接使用 GitHub Container Registry 镜像：
+### 方案 B：用 Docker 本地部署
+
+也可以直接使用 GitHub Container Registry 镜像，不需要在本机安装 Paper Easy 的 Node 依赖：
 
 ```bash
-docker run --rm -p 5174:5174 \
-  -e PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)" \
+export PAPERS_EASY_ADMIN_TOKEN="$(openssl rand -hex 24)"
+mkdir -p paper-easy-data
+
+docker run -d --name paper-easy --restart unless-stopped \
+  -p 5174:5174 \
+  -e PAPERS_EASY_ADMIN_TOKEN \
+  -e PAPERS_EASY_DB_PATH=/app/data/papers.easy.sqlite \
   -v "$PWD/paper-easy-data:/app/data" \
   ghcr.io/yanxingliu/paper-easy:latest
 ```
+
+Docker 方式仍然使用本地 MCP：
+
+- Web: `http://127.0.0.1:5174`
+- MCP: `http://127.0.0.1:5174/mcp`
+
+安装 Codex 插件或启动 Codex 前，需要在同一个 shell 中保留这个 token：
+
+```bash
+./scripts/install_codex_plugins.sh
+```
+
+如果需要查看启动或缓存刷新日志，可以运行：
+
+```bash
+docker logs -f paper-easy
+```
+
+如果终端关闭后还要继续使用，请把这个 token 保存到你自己的密码管理器或 shell 配置里，不要提交到仓库。
+
+### 方案 C：使用 hosted 只读实例
 
 如果不想本地部署 Paper Easy，可以使用 hosted 只读实例：
 
@@ -66,8 +102,13 @@ cp plugins/paper-easy-codex-plugin/.mcp.hosted.example.json \
 
 ## 2. 安装 Codex 插件
 
+根据第 1 步选择的 Paper Easy 后端，先准备插件连接方式：
+
+- 源码本地部署：运行 `eval "$(./scripts/print_paper_easy_token.sh)"`。
+- Docker 本地部署：继续使用启动容器时的同一个 `PAPERS_EASY_ADMIN_TOKEN`。
+- hosted 只读实例：先复制 `plugins/paper-easy-codex-plugin/.mcp.hosted.example.json` 到 `plugins/paper-easy-codex-plugin/.mcp.json`，不需要 token。
+
 ```bash
-eval "$(./scripts/print_paper_easy_token.sh)"
 ./scripts/install_codex_plugins.sh
 ```
 
@@ -77,15 +118,15 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - `codex-obsidian`，来自 `plugins/codex-obsidian` submodule
 - `zotero@openai-curated`，来自 `plugins/openai-plugins/plugins/zotero`
 
-Paper Easy 插件从环境变量 `PAPERS_EASY_ADMIN_TOKEN` 读取认证 token。不要把 token 写入插件文件。
+使用本地 Paper Easy 时，Paper Easy 插件从环境变量 `PAPERS_EASY_ADMIN_TOKEN` 读取认证 token。不要把 token 写入插件文件。
 
-在启动 Codex 前可以运行：
+如果是源码部署，在启动 Codex 前可以运行：
 
 ```bash
 eval "$(./scripts/print_paper_easy_token.sh)"
 ```
 
-这个命令只导出 token 到当前 shell，不把 token 写入仓库。
+这个命令只导出 token 到当前 shell，不把 token 写入仓库。Docker 部署则需要手动导出容器启动时使用的同一个 token。
 
 ## 3. 准备 Zotero
 

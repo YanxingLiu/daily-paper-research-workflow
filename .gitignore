@@ -13,6 +13,6 @@ coverage/
 test-results/
 screenshots/
 paper-easy/data/
+paper-easy-data/
 automation/work/*
 !automation/work/.gitkeep
-
