@@ -1,21 +1,80 @@
-# Daily Paper Research Workflow
+<p align="center">
+  <img src="assets/logo.svg" width="148" alt="Daily Paper Research Workflow logo">
+</p>
 
-一个可本地复现的每日论文工作流：从 Paper Easy 读取 arXiv Daily 和 Hugging Face Daily Papers，用 Codex 做主题筛选，把感兴趣论文同步到 Zotero/PDF，再生成 Obsidian Markdown 简报。简报中的每篇感兴趣论文会带 Zotero 深链和按需触发 LM for Zotero note 的链接。
+<h1 align="center">Daily Paper Research Workflow</h1>
 
-这个仓库包含：
+<p align="center">
+  <strong>A reproducible Codex + Paper Easy + Zotero + Obsidian workflow for turning daily AI paper feeds into an actionable research brief.</strong>
+</p>
 
-- `paper-easy/`：Paper Easy 服务源码，提供网页、缓存、arXiv/Hugging Face 抓取和 MCP endpoint。
-- `plugins/paper-easy-codex-plugin/`：Codex 访问 Paper Easy MCP 的插件。
-- `plugins/codex-obsidian/`：Obsidian Codex 插件 submodule，指向 <https://github.com/YanxingLiu/codex-obsidian>。
-- `plugins/openai-plugins/`：OpenAI plugins monorepo submodule；Zotero Codex plugin 位于 `plugins/openai-plugins/plugins/zotero`。
-- `automation/`：每日论文流水线脚本、LM for Zotero prompts 和示例输入。
-- `scripts/`：本地安装、启动和 URL handler 安装脚本。
+<p align="center">
+  <a href="README.zh-CN.md">中文</a>
+  ·
+  <a href="docs/AI_INSTALL.md">AI install guide</a>
+  ·
+  <a href="docs/INSTALL.md">Manual install</a>
+  ·
+  <a href="docs/WORKFLOW.md">Workflow</a>
+  ·
+  <a href="docs/SECURITY.md">Security</a>
+</p>
 
-如果你希望让 Codex 直接帮你安装这个工作流，可以把仓库交给 Codex，然后让它阅读 [docs/AI_INSTALL.md](docs/AI_INSTALL.md)。这份 Markdown 是专门给 AI agent 看的安装指令；Codex 读完后可以按里面的步骤完成本机安装和验证。
+<p align="center">
+  <a href="https://github.com/YanxingLiu/daily-paper-research-workflow"><img alt="GitHub repo" src="https://img.shields.io/badge/GitHub-daily--paper--workflow-24292f?logo=github"></a>
+  <img alt="Platform" src="https://img.shields.io/badge/platform-macOS-lightgrey">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-2f855a">
+  <img alt="Codex" src="https://img.shields.io/badge/built%20for-Codex-5E4AE3">
+</p>
 
-## 快速开始
+## Why This Exists
 
-macOS 上推荐按下面顺序执行：
+Daily paper feeds are useful, but they are noisy. This project packages a workflow that:
+
+- reads daily arXiv and Hugging Face paper feeds through Paper Easy,
+- asks Codex to do the only subjective step: theme-based paper selection,
+- deterministically syncs selected papers and PDFs into Zotero,
+- writes a consistent Markdown daily brief into Obsidian,
+- adds one-click links for on-demand LM for Zotero notes instead of summarizing every paper upfront.
+
+The goal is not to let an agent decide what is important for you. The goal is to remove repetitive paper triage work while keeping the final reading and judgment in your hands.
+
+## What Is Included
+
+| Path | Purpose |
+| --- | --- |
+| `paper-easy/` | Paper Easy source code for cached arXiv/Hugging Face feeds and the MCP endpoint. |
+| `plugins/paper-easy-codex-plugin/` | Codex plugin for reading Paper Easy through MCP. |
+| `plugins/codex-obsidian/` | Codex Obsidian plugin submodule, pointing to `YanxingLiu/codex-obsidian`. |
+| `plugins/openai-plugins/` | OpenAI plugins monorepo submodule; the Zotero plugin is at `plugins/openai-plugins/plugins/zotero`. |
+| `automation/` | Deterministic pipeline scripts, LM for Zotero prompts, and example inputs. |
+| `scripts/` | Bootstrap, plugin install, Paper Easy startup, and macOS URL handler helpers. |
+| `docs/` | Installation, AI-agent installation, workflow, and security notes. |
+
+## Workflow
+
+```mermaid
+flowchart LR
+  A[Paper Easy feeds] --> B[Codex selects topics]
+  B --> C[01 prepare input JSON]
+  C --> D[02 sync Zotero item + PDF]
+  D --> E[04 write Obsidian brief]
+  E --> F[Click LM for Zotero prompt link]
+  F --> G[05 generate one Zotero note on demand]
+```
+
+Default interest topics:
+
+- world models
+- embodied intelligence
+- spatial memory
+- multimodal large language models
+
+You can change the topics in the Codex automation prompt and input JSON.
+
+## Quick Start
+
+macOS is the primary target because the on-demand note action uses a custom `daily-paper-note://` URL handler.
 
 ```bash
 git clone --recurse-submodules https://github.com/YanxingLiu/daily-paper-research-workflow.git
@@ -28,19 +87,38 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 ./scripts/run_paper_easy.sh
 ```
 
-`run_paper_easy.sh` 会占用前台终端并启动 `http://127.0.0.1:5174`。`eval "$(./scripts/print_paper_easy_token.sh)"` 只把 Paper Easy MCP token 导出到当前 shell，不会打印 token 明文。另开一个 Codex 会话后，就可以让 Codex 使用 Paper Easy 插件读取每日论文，并按 `docs/CODEX_DAILY_AUTOMATION_PROMPT.md` 里的流程生成简报。
+`run_paper_easy.sh` starts the local Paper Easy server at `http://127.0.0.1:5174` and keeps the terminal occupied. Open another Codex session and ask Codex to follow `docs/CODEX_DAILY_AUTOMATION_PROMPT.md`.
 
-## Paper Easy 后端选择
+If you want Codex to install the workflow for you, ask it to read:
 
-推荐本地部署 Paper Easy，这样可以稳定抓取、刷新缓存，并按自己的方向配置 arXiv/Hugging Face 数据源。
+```text
+docs/AI_INSTALL.md
+```
 
-如果你不想本地部署爬取 arXiv 论文的 Paper Easy，也可以使用我部署好的只读实例：
+That file is written as an installation playbook for an AI coding agent.
+
+## Paper Easy Backend Options
+
+### Option A: Run Paper Easy Locally
+
+This is recommended for long-term use. Local deployment gives you stable cache refresh, local configuration, and full control over the arXiv/Hugging Face feed settings.
+
+Default endpoints:
+
+- Web: `http://127.0.0.1:5174`
+- MCP: `http://127.0.0.1:5174/mcp`
+
+### Option B: Use the Hosted Read-Only Paper Easy
+
+If you do not want to run the arXiv crawler locally, you can try my hosted Paper Easy instance:
 
 ```text
 https://paper-easy.liuyanxing.site:8443/
 ```
 
-因为我临近毕业搬家，主机可能会搬走，所以这个 hosted 服务不保证长期可用。它无需 admin token 即可使用所有只读功能。切换方法：
+Read-only tools do not require an admin token. The caveat is practical: I am close to graduation and moving, so the host machine may be moved and the service is not guaranteed to stay available.
+
+To switch the Codex plugin to the hosted read-only MCP endpoint:
 
 ```bash
 cp plugins/paper-easy-codex-plugin/.mcp.hosted.example.json \
@@ -48,48 +126,64 @@ cp plugins/paper-easy-codex-plugin/.mcp.hosted.example.json \
 ./scripts/install_codex_plugins.sh
 ```
 
-hosted 只读模式适合快速试用 `get_arxiv_daily_papers`、`get_arxiv_author_papers`、`get_huggingface_daily_papers`。如果需要刷新缓存或长期稳定使用，建议本地部署。
+Use hosted mode for quick trials of:
 
-## 外部依赖
+- `get_arxiv_daily_papers`
+- `get_arxiv_author_papers`
+- `get_huggingface_daily_papers`
 
-- Node.js 20+ 和 npm
+Use local mode if you need reliable cache refresh or custom feed configuration.
+
+## Requirements
+
+- Node.js 20+ and npm
 - Python 3.11+
-- Codex CLI / Codex 桌面环境
-- Zotero Desktop，并启用本地 API
-- Zotero Connector，用于导入论文和 PDF
-- Better BibTeX for Zotero，用于 collection scanAUX
-- [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)，用于把 Codex 生成的 note 写入 Zotero，也负责按需生成论文阅读 note。
-- OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)，用于让 Codex 操作本地 Zotero library；本仓库也以 submodule 形式放在 `plugins/openai-plugins/plugins/zotero`。
-- [Codex Obsidian plugin](https://github.com/YanxingLiu/codex-obsidian)，本仓库以 submodule 形式放在 `plugins/codex-obsidian`。
-- Obsidian，可选安装官方 Obsidian CLI
+- Codex CLI / Codex desktop environment
+- Zotero Desktop with local API access
+- Zotero Connector
+- Better BibTeX for Zotero
+- [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)
+- [OpenAI Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero), included through the `plugins/openai-plugins` submodule
+- [Codex Obsidian plugin](https://github.com/YanxingLiu/codex-obsidian), included through the `plugins/codex-obsidian` submodule
+- Obsidian, optionally with the official Obsidian CLI
 
-## 工作流概览
+## Generated Brief
 
-1. Paper Easy 缓存并暴露 arXiv Daily 和 Hugging Face Daily Papers。
-2. Codex 使用 Paper Easy MCP 读取论文列表，只负责筛选主题并填写 `selected`。
-3. `01_prepare_daily_paper_input.py` 固化输入 JSON。
-4. `02_sync_selected_papers_to_zotero.py` 把命中论文同步到 Zotero collection，并处理 PDF。
-5. `03_note_url_handler.py` 安装 `daily-paper-note://` macOS URL handler。
-6. `04_daily_paper_brief.py` 生成 Obsidian Markdown 简报。
-7. 点击简报里的 LM for Zotero 链接时，`05_generate_zotero_note_on_demand.py` 对单篇论文、单个 prompt 生成 Zotero note。
+The final Markdown brief has two main sections:
 
-默认关注主题是：
+1. Interested Papers
+2. Hugging Face Daily Papers
 
-- 世界模型
-- 具身智能
-- 空间记忆
-- 多模态大语言模型
+Interested papers include:
 
-修改主题时，改 Codex prompt 和输入 JSON 的 `topics` 即可。
+- Chinese and English titles
+- Chinese and English abstracts when available
+- arXiv/PDF links
+- Zotero deep links
+- on-demand `LM for Zotero` prompt links such as `Summarize`, `Methodology`, `Experiments`, and `Limitations`
 
-## 安全文档
+The Markdown is generated by `automation/outputs/04_daily_paper_brief.py`; the agent should not hand-write the final brief.
 
-这个仓库故意不包含：
+## Safety Boundaries
 
-- `.env` 真实配置
-- Paper Easy SQLite 数据库
-- Zotero 数据库或任何 Zotero SQLite 写入逻辑
-- 历史 `work/` 输出、checkpoint、日志和 note artifact
-- 私有部署域名或 token
+This repository intentionally does not include:
 
-详细说明见 [docs/SECURITY.md](docs/SECURITY.md)。
+- real `.env` files
+- API keys or admin tokens
+- Paper Easy SQLite databases
+- Zotero SQLite databases
+- local PDFs or Zotero attachments
+- generated `automation/work/` outputs
+- generated note Markdown artifacts
+
+The Zotero workflow does not directly modify Zotero's SQLite database. It writes through Zotero-supported surfaces such as Zotero Connector, the local API, Better BibTeX helpers, and LM for Zotero runtime scripts.
+
+See [docs/SECURITY.md](docs/SECURITY.md) for the full security notes.
+
+## Documentation
+
+- [AI install guide](docs/AI_INSTALL.md): instructions for Codex or another local coding agent.
+- [Manual install guide](docs/INSTALL.md): human-facing installation notes.
+- [Daily automation prompt](docs/CODEX_DAILY_AUTOMATION_PROMPT.md): the prompt used to run the daily job.
+- [Workflow details](docs/WORKFLOW.md): script-by-script pipeline notes.
+- [Security notes](docs/SECURITY.md): token, artifact, and Zotero write boundaries.
