@@ -1,3 +1,6 @@
 [submodule "plugins/openai-plugins"]
 	path = plugins/openai-plugins
 	url = https://github.com/openai/plugins.git
+[submodule "plugins/codex-obsidian"]
+	path = plugins/codex-obsidian
+	url = https://github.com/YanxingLiu/codex-obsidian.git

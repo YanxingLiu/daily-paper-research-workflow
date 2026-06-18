@@ -41,9 +41,10 @@ codex --version
 
 ## 初始化 submodule
 
-OpenAI Zotero Codex plugin 以 submodule 形式放在本仓库：
+Codex Obsidian plugin 和 OpenAI Zotero Codex plugin 都以 submodule 形式放在本仓库：
 
 ```text
+plugins/codex-obsidian
 plugins/openai-plugins/plugins/zotero
 ```
 
@@ -96,7 +97,7 @@ cp plugins/paper-easy-codex-plugin/.mcp.hosted.example.json \
 ./scripts/install_note_url_handler.sh
 ```
 
-`install_codex_plugins.sh` 会安装本仓库的 `paper-easy`、`codex-obsidian`，并在 submodule 可用时安装 OpenAI 的 `zotero@openai-curated`。
+`install_codex_plugins.sh` 会初始化 submodule，安装本仓库的 `paper-easy`、`codex-obsidian`，并在 OpenAI plugins submodule 可用时安装 `zotero@openai-curated`。
 
 hosted 只读模式下，不要依赖 `sync_papers` 刷新缓存；只使用：
 

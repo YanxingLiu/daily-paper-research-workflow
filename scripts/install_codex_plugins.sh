@@ -8,13 +8,15 @@ if ! command -v codex >/dev/null 2>&1; then
   exit 1
 fi
 
+if [ -f "$ROOT_DIR/.gitmodules" ] && git -C "$ROOT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git -C "$ROOT_DIR" submodule update --init --recursive --depth 1 \
+    plugins/codex-obsidian \
+    plugins/openai-plugins
+fi
+
 codex plugin marketplace add "$ROOT_DIR" >/dev/null || true
 codex plugin add paper-easy --marketplace daily-paper-workflow
 codex plugin add codex-obsidian --marketplace daily-paper-workflow
-
-if [ -f "$ROOT_DIR/.gitmodules" ]; then
-  git -C "$ROOT_DIR" submodule update --init --recursive --depth 1 plugins/openai-plugins
-fi
 
 if [ -d "$ROOT_DIR/plugins/openai-plugins/.agents/plugins" ]; then
   codex plugin marketplace add "$ROOT_DIR/plugins/openai-plugins" >/dev/null || true

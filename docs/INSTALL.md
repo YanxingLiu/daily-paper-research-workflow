@@ -65,7 +65,7 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 该脚本会把本仓库注册为本地 Codex marketplace，并安装：
 
 - `paper-easy`
-- `codex-obsidian`
+- `codex-obsidian`，来自 `plugins/codex-obsidian` submodule
 - `zotero@openai-curated`，来自 `plugins/openai-plugins/plugins/zotero`
 
 Paper Easy 插件从环境变量 `PAPERS_EASY_ADMIN_TOKEN` 读取认证 token。不要把 token 写入插件文件。
@@ -87,6 +87,7 @@ eval "$(./scripts/print_paper_easy_token.sh)"
 - Better BibTeX for Zotero
 - [llm-for-zotero](https://github.com/yilewang/llm-for-zotero)
 - OpenAI 的 [Zotero Codex plugin](https://github.com/openai/plugins/tree/main/plugins/zotero)，本仓库 submodule 路径是 `plugins/openai-plugins/plugins/zotero`
+- [Codex Obsidian plugin](https://github.com/YanxingLiu/codex-obsidian)，本仓库 submodule 路径是 `plugins/codex-obsidian`
 
 Zotero 本地 API 默认使用：
 
